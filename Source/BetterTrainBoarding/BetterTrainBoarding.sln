@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterTrainBoarding", "BetterTrainBoarding.csproj", "{761B4866-E422-412F-A7BB-1C0CF0AF0AE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{761B4866-E422-412F-A7BB-1C0CF0AF0AE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{761B4866-E422-412F-A7BB-1C0CF0AF0AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{761B4866-E422-412F-A7BB-1C0CF0AF0AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{761B4866-E422-412F-A7BB-1C0CF0AF0AE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11617045-2D39-4D92-9FC2-DE2BF4ACCFAA}
+	EndGlobalSection
+EndGlobal
