@@ -13,7 +13,7 @@ namespace BetterTrainBoarding
         {
             get
             {
-                return "Beter Train Boarding";
+                return "Better Train Boarding";
             }
         }
 
