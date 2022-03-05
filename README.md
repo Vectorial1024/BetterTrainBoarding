@@ -20,4 +20,4 @@ These transportation types are not yet covered, but are at a low priority:
 - Buses
 - Trolleybuses
 
-They are low priority because, while they can exhibit train-like boarding behavior when multi-trailer vehicles are used, the small total length of those vehicles means that the train-like boarding behavior is not obvious, and can be ignored.
+They are low priority because of their relatively small size compared to trains and metros. While they will have the same behavior when you utilize multi-trailer buses/trams etc, the effects are less obvious, and can be ignored. At least for now.
