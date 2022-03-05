@@ -1,5 +1,5 @@
 # BetterTrainBoarding
-Unlock the peak efficiency of trains (and also metros):
+Unlock the peak efficiency of trains (and also metros) by fixing boarding behavior:
 
 - Passengers board trains (and metros) sensibly by each preferring the closest compartment
   - To be explained below
