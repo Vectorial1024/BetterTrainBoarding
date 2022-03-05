@@ -75,6 +75,9 @@ namespace BetterTrainBoarding
             // iteration complete
         }
 
+        /**
+         * May be explained with more docs/pics when I have the time to do so.
+         */
         private static void SensiblyLoadPassengers(ushort vehicleID, ushort currentStop, ushort nextStop, List<CompartmentInfo> analysis)
         {
             if (currentStop == 0 || nextStop == 0)
