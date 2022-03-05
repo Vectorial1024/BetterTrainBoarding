@@ -1,0 +1,64 @@
+Unlock the peak efficiency of trains/metros by fixing boarding behavior.
+
+中文名：火車上車易
+
+[h1]Quick info[/h1]
+[list]
+[*]Requires Harmony
+[*]Passengers board trains and metros by preferring the closest available trailer
+[*]Greatly improves efficiency of trains/metros
+[*]火車乘客/地鐵乘客上車時會優先選擇最接近自己嘅車卡
+[*]大幅改善火車/地鐵效率
+[/list]
+
+In my game, the metro lines were always a problem. While they e.g. certainly can carry more passengers than buses, for some reason they just feel less effective that they seem.
+
+It turns out this is caused by the game's simple algorithm for loading passengers into the metro. This causes problems when the metro cannot accept all passengers waiting at the platform:
+[list]
+[*]Passengers are to be sent into the metro sequentially from the front to the end of the platform, until the metro is full
+[*]They can spend too much time walking to the correct trailer, e.g., when front-most passengers are are assigned the back-most metro trailer
+[/list]
+This causes metros to be delayed, which creates a vicuious cycle: there will be more passengers waiting at the next station.
+
+And so, this mod makes changes such that:
+[list]
+[*]Passengers will board the metro by each of their own closest trailer, until the metro is full
+[*]Most of the time, this means the passengers will board the trailer in front of them, saving boarding time
+[/list]
+
+[h1]What you can do with this mod[/h1]
+With this mod enabled, you can do the following:
+[list]
+[*]Have city-centre metro lines that actually work
+[*]Have long-distance inner-city train lines that actually work
+[*]Generally increases the efficiency of inner-city transportation
+[/list]
+[h1]GitHub Repo[/h1]
+This mod is open-sourced, and the repo is available here: https://github.com/Vectorial1024/BetterTrainBoarding
+
+And that's all!
+
+------
+
+我知道地鐵嘅優勢係例如可以有好高嘅載客量，但我總係覺得遊戲入面嘅地鐵嘅效能比想像中差好多。
+
+後來發覺原來係因為本game處理乘客上車嘅時候用咗一個簡單嘅步驟，但係呢個步驟會喺滿座「上唔晒」嘅情況下出現問題：
+[list]
+[*]乘客上車時，先由車頭到車尾，前往任何車卡上車，直至滿座
+[*]有機會令乘客由車頭行去車尾上車，浪費大量時間
+[/list]
+惡性循環出現了：地鐵上車出現延誤，導致下一站有更多人等車，更容易滿載。
+
+因此，本mod作出以下修改：
+[list]
+[*]乘客上車時，會先各自選擇最接近自己嘅車卡上車，直至滿座
+[*]通常情況下，乘客會登上面前嘅車卡，節省上車時間
+[/list]
+
+[h1]有何好處?[/h1]
+你可以順利模擬部分香港交通形勢：
+[list]
+[*]市區地鐵：高載客量、減少延誤
+[*]市郊鐵路：大站上落客不再係一個黑洞
+[*]改善市內交通效率
+[/list]
