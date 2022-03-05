@@ -6,6 +6,7 @@ Unlock the peak efficiency of trains (and also metros):
 
 # Mod Status
 - No known compatibility problems
+- Absolutely save-game compatible: determining which CIM boards which trailer is an instantaneous operation
 
 Because this mod is very small and simple, I am open-sourcing this to everyone out there.
 
