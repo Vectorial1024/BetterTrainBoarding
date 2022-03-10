@@ -17,6 +17,8 @@ These transportation types are currently covered by this mod:
   - Metros
 - Trams
 
+Note: While not directly tested and unprovable from static analysis, monorails should also be covered as well. Do notify me if I am wrong.
+
 These transportation types are not yet covered, but are at a low priority:
 - Buses
 - Trolleybuses
