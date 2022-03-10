@@ -8,6 +8,7 @@ namespace BetterTrainBoarding
 {
     [HarmonyPatch(typeof(TramAI))]
     [HarmonyPatch("LoadPassengers", MethodType.Normal)]
+    [HarmonyPriority(Priority.LowerThanNormal)]
     public class Prefix_TramAI_LoadPassengers
     {
         [HarmonyPrefix]

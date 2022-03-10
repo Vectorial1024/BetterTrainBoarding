@@ -10,6 +10,7 @@ namespace BetterTrainBoarding
 {
     [HarmonyPatch(typeof(PassengerTrainAI))]
     [HarmonyPatch("LoadPassengers", MethodType.Normal)]
+    [HarmonyPriority(Priority.LowerThanNormal)]
     public class Prefix_PassengerTrainAI_LoadPassengers
     {
 
