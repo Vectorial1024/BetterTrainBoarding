@@ -15,9 +15,9 @@ These transportation types are currently covered by this mod:
 - Anything under `PassengerTrainAI`:
   - Trains
   - Metros
+- Trams
 
 These transportation types are not yet covered, but are at a low priority:
-- Trams
 - Buses
 - Trolleybuses
 
