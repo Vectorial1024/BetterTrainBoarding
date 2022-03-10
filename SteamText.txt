@@ -7,8 +7,10 @@ Unlock the peak efficiency of trains/metros by fixing boarding behavior.
 [*]Requires Harmony
 [*]Passengers board trains and metros by preferring the closest available trailer
 [*]Greatly improves efficiency of trains/metros
+[*](New) Now also supports trams (light rails)
 [*]火車乘客/地鐵乘客上車時會優先選擇最接近自己嘅車卡
 [*]大幅改善火車/地鐵效率
+[*](新) 電車 (輕鐵) 亦有得益
 [/list]
 
 In my game, the metro lines were always a problem. While they e.g. certainly can carry more passengers than buses, for some reason they just feel less effective that they seem.
