@@ -21,7 +21,9 @@ These transportation types are not yet covered, but are at a low priority:
 - Buses
 - Trolleybuses
 
-They are low priority because of their relatively small size compared to trains and metros. While they will have the same behavior when you utilize multi-trailer buses/trams etc, the effects are less obvious, and can be ignored. At least for now.
+They are low priority because of their relatively small size compared to trains and metros. While they will have the same behavior when you utilize multi-trailer buses/trams etc, the effects are less obvious, and are negligible. At least for now.
+
+Unless you are using mods that modify CIM's walking speed, but still, those mod would scale up boarding time quite fairly across all types of transportation, so ultimately the boarding time of e.g. buses are still "comparatively negligible".
 
 ## Motivation
 
