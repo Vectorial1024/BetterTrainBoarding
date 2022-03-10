@@ -10,6 +10,7 @@ namespace BetterTrainBoarding
 {
     [HarmonyPatch(typeof(PassengerTrainAI))]
     [HarmonyPatch("LoadPassengers", MethodType.Normal)]
+    // Need to execute after IPT2; and IPT2 did not specify Priority => Priority = Normal
     [HarmonyPriority(Priority.LowerThanNormal)]
     public class Prefix_PassengerTrainAI_LoadPassengers
     {
