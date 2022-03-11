@@ -5,6 +5,7 @@ Unlock the peak efficiency of trains/metros by fixing boarding behavior.
 [h1]Quick info[/h1]
 [list]
 [*]Requires Harmony
+[*]Load after IPT2; more details in FAQ
 [*]Passengers board trains and metros by preferring the closest available trailer
 [*]Greatly improves efficiency of trains/metros
 [*](New) Now also supports trams (light rails)
