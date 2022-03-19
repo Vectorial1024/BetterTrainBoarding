@@ -27,11 +27,13 @@ namespace BetterTrainBoarding
         public struct PassengerChoice
         {
             public ushort citizenID;
+            public byte waitCounter;
             public ushort vehicleID;
 
-            public PassengerChoice(ushort citizenID, ushort vehicleID)
+            public PassengerChoice(ushort citizenID, byte waitCounter, ushort vehicleID)
             {
                 this.citizenID = citizenID;
+                this.waitCounter = waitCounter;
                 this.vehicleID = vehicleID;
             }
         }
