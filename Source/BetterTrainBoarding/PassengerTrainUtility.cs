@@ -196,6 +196,20 @@ namespace BetterTrainBoarding
             // find out the mapping of (cim -> nearest compartment group by compartment)
             // each element in this will correspond to the analysis list by index
             List<List<ushort>> mappingList = new List<List<ushort>>();
+
+            // new approach:
+            // find out the mapping of (cim -> ranked choice of nearest compartment order by distance)
+            // we iterate this many times so that we process 1st priority, and then 2nd priority, ... etc
+            Dictionary<int, List<PassengerChoice>> rankedChoiceDict = new Dictionary<int, List<PassengerChoice>>();
+            // but because of this, we also need to remember which CIMs have already boarded the train
+            HashSet<ushort> pendingPassengers = new HashSet<ushort>();
+            HashSet<ushort> boardedPassengers = new HashSet<ushort>();
+
+            for (int i = 0; i < analysis.Count; i++)
+            {
+                rankedChoiceDict.Add(i, new List<PassengerChoice>());
+            }
+
             foreach (CompartmentInfo info in analysis)
             {
                 mappingList.Add(new List<ushort>());
@@ -220,10 +234,21 @@ namespace BetterTrainBoarding
                             float num8 = Vector3.SqrMagnitude(vector - position);
                             if (num8 < 4096f && true)
                             {
-                                CitizenInfo info = instance.m_instances.m_buffer[citizenGridID].Info;
+                                CitizenInstance citizenInstance = instance.m_instances.m_buffer[citizenGridID];
+                                CitizenInfo info = citizenInstance.Info;
                                 if (info.m_citizenAI.TransportArriveAtSource(citizenGridID, ref instance.m_instances.m_buffer[citizenGridID], position, position2))
                                 {
                                     // cim will want to board this
+                                    pendingPassengers.Add(citizenGridID);
+                                    byte waitCounter = citizenInstance.m_waitCounter;
+                                    List<ushort> rankedChoice = GetBoardingRankedChoice(vehicleID, vector);
+                                    for (int rank = 0; rank < rankedChoice.Count; rank++)
+                                    {
+                                        ushort pickedTrailerID = rankedChoice[rank];
+                                        PassengerChoice choice = new PassengerChoice(citizenGridID, waitCounter, pickedTrailerID);
+                                        rankedChoiceDict[rank].Add(choice);
+                                    }
+
                                     if (PassengerTrainUtility.GetClosestTrailer(vehicleID, vector, out ushort trailerID))
                                     {
                                         // I assert that this exists
@@ -251,6 +276,56 @@ namespace BetterTrainBoarding
             }
             */
 
+            // begin processing the ranked choices
+            foreach (int rank in rankedChoiceDict.Keys)
+            {
+                // can we skip this?
+                if (pendingPassengers.Count == 0)
+                {
+                    // no one is waiting
+                    break;
+                }
+                bool isFull;
+                AnalyzeTrain(vehicleID, out isFull, out _);
+                if (isFull)
+                {
+                    // train is full already
+                    break;
+                }
+
+                // process this rank
+                List<PassengerChoice> choicesInThisRank = rankedChoiceDict[rank];
+                // sort it first, so that passengers who have waited too long can board first
+                choicesInThisRank.Sort(PassengerChoice.ComparePriority);
+                foreach (PassengerChoice choice in choicesInThisRank)
+                {
+                    ushort citizenID = choice.citizenID;
+                    if (!pendingPassengers.Contains(citizenID))
+                    {
+                        // this passenger is not waiting; perhaps they already got onto the train
+                        continue;
+                    }
+                    // this passenger is waiting; can their wish be fulfilled?
+                    ushort trailerID = choice.vehicleID;
+                    uint citizenUnitID;
+                    if (VehicleTrailerIsFree(trailerID, out citizenUnitID))
+                    {
+                        // wish fulfilled.
+                        CitizenInfo info = instance.m_instances.m_buffer[citizenID].Info;
+                        if (info.m_citizenAI.SetCurrentVehicle(citizenID, ref instance.m_instances.m_buffer[citizenID], trailerID, citizenUnitID, position))
+                        {
+                            // cim can enter the vehicle
+                            // Debug.Log("Accept");
+                            num++;
+                            instance2.m_vehicles.m_buffer[trailerID].m_transferSize++;
+                            pendingPassengers.Remove(citizenID);
+                        }
+                    }
+                }
+                // everything is processed; we give it to the next iteration to check whether we need to continue.
+            }
+
+            /*
             // all citizens are now assigned to their own closest compartment.
             // now, let them board the train!
             int currentCompartmentDistance = 0;
@@ -378,6 +453,7 @@ namespace BetterTrainBoarding
                 // more to try; move on to the next distance!
                 currentCompartmentDistance++;
             }
+            */
 
             // finalize
             instance3.m_nodes.m_buffer[currentStop].m_tempCounter = (ushort)Mathf.Min(num, 65535);
