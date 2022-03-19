@@ -108,6 +108,13 @@ namespace BetterTrainBoarding
             return rankedChoice;
         }
 
+        public static bool VehicleTrailerIsFree(ushort vehicleID, out uint citizenUnit)
+        {
+            VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
+            citizenUnit = vehicleManager.m_vehicles.m_buffer[vehicleID].GetNotFullCitizenUnit(CitizenUnit.Flags.Vehicle);
+            return citizenUnit != 0;
+        }
+
         public static void AnalyzeTrain(ushort vehicleID, out bool isFull, out List<CompartmentInfo> analysis)
         {
             // assuming that the list is valid
