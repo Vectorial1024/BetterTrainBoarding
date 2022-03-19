@@ -64,7 +64,7 @@ namespace BetterTrainBoarding
         public static List<ushort> GetBoardingRankedChoice(ushort vehicleID, Vector3 position)
         {
             VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
-            List<ushort> rankedChoice = new List<ushort>;
+            List<ushort> rankedChoice = new List<ushort>();
 
             // ranked choice is ordered by distance to each trailer
             // it seems that c# does not have any convenient custom sorter...
