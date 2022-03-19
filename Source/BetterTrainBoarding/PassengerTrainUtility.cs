@@ -61,6 +61,53 @@ namespace BetterTrainBoarding
 			return trailerID != 0;
 		}
 
+        public static List<ushort> GetBoardingRankedChoice(ushort vehicleID, Vector3 position)
+        {
+            VehicleManager vehicleManager = Singleton<VehicleManager>.instance;
+            List<ushort> rankedChoice = new List<ushort>;
+
+            // ranked choice is ordered by distance to each trailer
+            // it seems that c# does not have any convenient custom sorter...
+
+            Dictionary<ushort, float> distances = new Dictionary<ushort, float>();
+            int trailerIterationGuard = 0;
+            while (vehicleID != 0)
+            {
+                Frame lastFrameData = vehicleManager.m_vehicles.m_buffer[vehicleID].GetLastFrameData();
+                float currentDistance = Vector3.SqrMagnitude(position - lastFrameData.m_position);
+                distances.Add(vehicleID, currentDistance);
+                vehicleID = vehicleManager.m_vehicles.m_buffer[vehicleID].m_trailingVehicle;
+                if (++trailerIterationGuard > 16384)
+                {
+                    CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
+                    break;
+                }
+            }
+
+            // we do a simple insert sort
+            while (distances.Count > 0)
+            {
+                // find min
+                ushort minKey = 0;
+                float minDistance = 1E+10f;
+                foreach (ushort key in distances.Keys)
+                {
+                    float distance = distances[key];
+                    if (distance < minDistance)
+                    {
+                        minDistance = distance;
+                        minKey = key;
+                    }
+                }
+
+                // process
+                rankedChoice.Add(minKey);
+                distances.Remove(minKey);
+            }
+
+            return rankedChoice;
+        }
+
         public static void AnalyzeTrain(ushort vehicleID, out bool isFull, out List<CompartmentInfo> analysis)
         {
             // assuming that the list is valid
