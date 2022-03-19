@@ -51,30 +51,24 @@ For each waiting passenger, from the front of the platform to the end of the pla
 
 This results in a negative feedback loop when there are so many passengers at a platform that the train/metro cannot take them all. Some passengers are left behind, then the next train arrives, then the passengers use the above behavior to board the train, which delays the train. When every station behaves like this, the throughput is greatly reduced. This can only be fully "fixed" only when the "passenger cluster" at the end of the platform is cleared.
 
+Moreover, this way of loading passengers do not take into account the wait-timer of citizens, which makes passengers who waited too long and could not board the train utilize their "pocket car", making the situation worse.
+
 ### This mod
 Train/metro begins loading passengers:
 
 ```
-For each waiting passenger, identify their closest trailer (does not care full or not)
-Partition the platform into n parts, where n = number of trailers of the train/metro
-Note: now, for trailers 1, 2, ..., n, their closest platform partition # will be 1, 2, ..., n
+For each waiting passenger, identify their ranked choices of preferred trailer order by distance
+(ie, they prefer the trailer that is closest to them, and then the 2nd closest, ...)
 
-Try to load passengers where abs(partition # - trailer #) = 0:
-    For each passenger in partition:
-        If closest free trailer has correct trailer #:
-            Passenger enters the trailer
-        Else:
-            Try the next passenger
-If train is full or platform is empty:
-    Stop this operation
+Note: # of ranked choices = # of trailers that the train has
+For each available rank: 
+    Sort the ranked choices: passengers that have waited a long time will be prioritized
+    Try to satisfy their choice by checking whether the chosen trailer is actually free:
+        If free, then passenger enters that trailer
+        Else try the next ranked choice
 
-Retry above with abs(...) = 1 (note: this means e.g. 1 -> 2, 2 -> 1, 2 -> 3, ...)
-
-Retry above with abs(...) = 2
-
-...
-
-Retry above with abs(...) = n-1 (note: this means 1 -> n, n -> 1)
 ```
 
 The negative feedback loop is greatly reduced. When the train/metro cannot load all the passengers at the platform, passengers who cannot board the train/metro are somewhat evenly distributed along the platform, and when there are space available, passengers can board the train/metro intelligently and efficiently. There may still be some passengers who need to move to a compartment far from where they are waiting the train/metro, but their number has been greatly reduced. This minimizes delay.
+
+Moreover, this algorithm prioritizes those passengers that have waited too much time. This reduces usage of "pocket cars" among passengers.
