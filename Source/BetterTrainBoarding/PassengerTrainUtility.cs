@@ -24,6 +24,18 @@ namespace BetterTrainBoarding
             }
         }
 
+        public struct PassengerChoice
+        {
+            public uint citizenID;
+            public uint vehicleID;
+
+            public PassengerChoice(uint citizenID, uint vehicleID)
+            {
+                this.citizenID = citizenID;
+                this.vehicleID = vehicleID;
+            }
+        }
+
         public static bool GetClosestTrailer(ushort vehicleID, Vector3 position, out ushort trailerID)
 		{
 			VehicleManager instance = Singleton<VehicleManager>.instance;
