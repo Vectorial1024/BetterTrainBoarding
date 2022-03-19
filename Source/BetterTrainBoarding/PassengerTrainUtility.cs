@@ -36,6 +36,12 @@ namespace BetterTrainBoarding
                 this.waitCounter = waitCounter;
                 this.vehicleID = vehicleID;
             }
+
+            public static int ComparePriority(PassengerChoice a, PassengerChoice b)
+            {
+                // place the one with a higher waitCounter to the front;
+                return a.waitCounter - b.waitCounter;
+            }
         }
 
         public static bool GetClosestTrailer(ushort vehicleID, Vector3 position, out ushort trailerID)
