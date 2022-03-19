@@ -210,15 +210,6 @@ namespace BetterTrainBoarding
                 rankedChoiceDict.Add(i, new List<PassengerChoice>());
             }
 
-            foreach (CompartmentInfo info in analysis)
-            {
-                mappingList.Add(new List<ushort>());
-            }
-            Dictionary<uint, int> reverseCache = new Dictionary<uint, int>();
-            for (int i = 0; i < analysis.Count; i++)
-            {
-                reverseCache.Add(analysis[i].vehicleId, i);
-            }
             for (int i = capZLower; i <= capZUpper; i++)
             {
                 for (int j = capXLower; j <= capXUpper; j++)
@@ -247,12 +238,6 @@ namespace BetterTrainBoarding
                                         ushort pickedTrailerID = rankedChoice[rank];
                                         PassengerChoice choice = new PassengerChoice(citizenGridID, waitCounter, pickedTrailerID);
                                         rankedChoiceDict[rank].Add(choice);
-                                    }
-
-                                    if (PassengerTrainUtility.GetClosestTrailer(vehicleID, vector, out ushort trailerID))
-                                    {
-                                        // I assert that this exists
-                                        mappingList[reverseCache[trailerID]].Add(citizenGridID);
                                     }
                                 }
                             }
@@ -324,136 +309,6 @@ namespace BetterTrainBoarding
                 }
                 // everything is processed; we give it to the next iteration to check whether we need to continue.
             }
-
-            /*
-            // all citizens are now assigned to their own closest compartment.
-            // now, let them board the train!
-            int currentCompartmentDistance = 0;
-            while (true)
-            {
-                // what mappings to try?
-                // fr safety, we will NOT do Tuples
-                List<List<int>> combosToTry = new List<List<int>>();
-                if (currentCompartmentDistance == 0)
-                {
-                    for (int i = 0; i < mappingList.Count; i++)
-                    {
-                        combosToTry.Add(new List<int>() { i, i });
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < mappingList.Count; i++)
-                    {
-                        int platformSegment = i - currentCompartmentDistance;
-                        if (platformSegment >= 0 && platformSegment < mappingList.Count)
-                        {
-                            combosToTry.Add(new List<int>() { i, platformSegment });
-                        }
-                        platformSegment = i + currentCompartmentDistance;
-                        if (platformSegment >= 0 && platformSegment < mappingList.Count)
-                        {
-                            combosToTry.Add(new List<int>() { i, platformSegment });
-                        }
-                    }
-                }
-                foreach (List<int> combo in combosToTry)
-                {
-                    int trailerIndex = combo[0];
-                    int platformSegmentIndex = combo[1];
-                    CompartmentInfo compInfo = analysis[trailerIndex];
-                    // Debug.Log("Trailer against Platform " + trailerIndex + " " + platformSegmentIndex);
-
-                    // for each such combination...
-                    // try to put the cims into said compartment
-                    // we load the citizen at index 0 into the trailers until we cannot
-                    int nextCitizenIndex = 0;
-                    while (true)
-                    {
-                        if (mappingList[platformSegmentIndex].Count == 0)
-                        {
-                            // until we cannot: no cims remaining
-                            // Debug.Log("No passenger; break");
-                            break;
-                        }
-                        if (nextCitizenIndex >= mappingList[platformSegmentIndex].Count)
-                        {
-                            // until we cannot: cannot iterate (explained below)
-                            // Debug.Log("No passenger (uniterable); break");
-                            break;
-                        }
-                        ushort citizenID = mappingList[platformSegmentIndex][nextCitizenIndex];
-                        CitizenInfo info = instance.m_instances.m_buffer[citizenID].Info;
-                        Vector3 cimPos = instance.m_instances.m_buffer[citizenID].m_targetPos;
-                        if (Vehicle.GetClosestFreeTrailer(vehicleID, cimPos, out ushort trailerID, out uint unitID))
-                        {
-                            if (trailerID != compInfo.vehicleId)
-                            {
-                                // until we cannot: the trailer is full.
-
-                                // but hold it! supposedly this aims to check "trailer is full (have space elsewhere)"
-                                // however for distance > 0, it does not guarantee that the iteartion is "convergent".
-                                // this effect is seen more obviously for the center-most compartment:
-                                // when we want to check whether passengers can go to the front most compartment, we may iterate to a passenger whose closest compartment is at the back-most
-                                // and vice versa; this produces a zig-zag iteration pattern
-                                // and hence results in lower-than-optimal loading for the affected metro-train.
-                                // Debug.Log("Trailer full (have space on other trailers); seek next");
-                                nextCitizenIndex++;
-                                continue;
-                            }
-                            if (info.m_citizenAI.SetCurrentVehicle(citizenID, ref instance.m_instances.m_buffer[citizenID], trailerID, unitID, position))
-                            {
-                                // cim can enter the vehicle
-                                // Debug.Log("Accept");
-                                num++;
-                                instance2.m_vehicles.m_buffer[trailerID].m_transferSize++;
-                                mappingList[platformSegmentIndex].RemoveAt(nextCitizenIndex);
-                            }
-                        }
-                        else
-                        {
-                            // 
-                            // Debug.Log("Trailer full (no space in train); break;");
-                            break;
-                        }
-                    }
-
-                    // now, all cims are inserted into the compartments according to the "mapping distance" that we declared
-                }
-                // can we continue with more mapping?
-
-                // 1. is the train full? train full = stop now.
-                List<CompartmentInfo> innerAnalysis;
-                bool isFull;
-                AnalyzeTrain(vehicleID, out isFull, out innerAnalysis);
-                if (isFull)
-                {
-                    break;
-                }
-                // train is not yet full
-                // 2. do we have anyone left waiting? no one waiting = stop now
-                bool hasCim = false;
-                foreach (List<ushort> waitList in mappingList)
-                {
-                    if (waitList.Count > 0)
-                    {
-                        hasCim = true;
-                        break;
-                    }
-                }
-                if (!hasCim)
-                {
-                    break;
-                }
-                // 3. have we exhausted all combinations?
-                if (currentCompartmentDistance >= mappingList.Count)
-                {
-                    break;
-                }
-                // more to try; move on to the next distance!
-                currentCompartmentDistance++;
-            }
-            */
 
             // finalize
             instance3.m_nodes.m_buffer[currentStop].m_tempCounter = (ushort)Mathf.Min(num, 65535);
