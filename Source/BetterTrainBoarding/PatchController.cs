@@ -42,5 +42,7 @@ namespace BetterTrainBoarding
             //BusPickDropLookupTable.WipeTable();
             //CitizenRunawayTable.WipeTable();
         }
+
+        public const string ExpressBusServicesHarmonyID = "com.vectorial1024.cities.ebs";
     }
 }
