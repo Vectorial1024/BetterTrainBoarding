@@ -14,7 +14,6 @@ namespace BetterTrainBoarding
     [HarmonyPriority(Priority.LowerThanNormal)]
     public class Prefix_PassengerTrainAI_LoadPassengers
     {
-
         [HarmonyPrefix]
         public static bool PreFix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
