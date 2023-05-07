@@ -65,6 +65,7 @@
     <Compile Include="BetterTrainBoarding.cs" />
     <Compile Include="PassengerTrainUtility.cs" />
     <Compile Include="PatchController.cs" />
+    <Compile Include="Prefix_BusAI_LoadPassengers.cs" />
     <Compile Include="Prefix_PassengerTrainAI_LoadPassengers.cs" />
     <Compile Include="Prefix_TramAI_LoadPassengers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
