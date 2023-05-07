@@ -68,6 +68,7 @@
     <Compile Include="Prefix_BusAI_LoadPassengers.cs" />
     <Compile Include="Prefix_PassengerTrainAI_LoadPassengers.cs" />
     <Compile Include="Prefix_TramAI_LoadPassengers.cs" />
+    <Compile Include="Prefix_TrolleybusAI_LoadPassengers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
