@@ -7,28 +7,43 @@ Unlock the peak efficiency of trains/metros by fixing boarding behavior.
 [*]Requires Harmony
 [*]Load after IPT2; more details in FAQ
 [*]Passengers board trains and metros by preferring the closest available trailer
+[*](Clarify) Passengers board trains and metros by first-come-first-serve
 [*]Greatly improves efficiency of trains/metros
 [*](New) Now also supports trams (light rails)
 [*]Should also work with monorails
+[*](New) Now also benefits buses, ferries, etc
 [*]火車乘客/地鐵乘客上車時會優先選擇最接近自己嘅車卡
+[*](闡明) 火車乘客/地鐵乘客以「先到先得」原則上車
 [*]大幅改善火車/地鐵效率
 [*](新) 電車 (輕鐵) 亦有得益
 [*]應該對單軌列車同時有效
+[*](新) 巴士、渡輪等等亦有得益
 [/list]
 
 In my game, the metro lines were always a problem. While they e.g. certainly can carry more passengers than buses, for some reason they just feel less effective that they seem.
 
+A similar situation also plagues the bus lines. I certainly made sure there are enough vehicles to move the passengers, but for some reason, CIMs just give up too soon when waiting for buses.
+
 It turns out this is caused by the game's simple algorithm for loading passengers into the metro. This causes problems when the metro cannot accept all passengers waiting at the platform:
 [list]
 [*]Passengers are to be sent into the metro sequentially from the front to the end of the platform, until the metro is full
-[*]They can spend too much time walking to the correct trailer, e.g., when front-most passengers are are assigned the back-most metro trailer
+[*]They can spend too much time walking to the correct trailer, e.g., when front-most passengers are assigned the back-most metro trailer
 [/list]
 This causes metros to be delayed, which creates a vicuious cycle: there will be more passengers waiting at the next station.
+
+The same algorithm also causes problems where the bus (and other types of transport) cannot accept passengers in a logical manner:
+[list]
+[*]The loading algorithm does not take into account who arrived first
+[*]Very often in intermediate stops, some passengers are consistently left behind due to insufficient capacity in each individual passing bus 
+[/list]
+This generates a consistent group of "leftover" passengers, who either give up or spawn their pocket vehicles, creating sudden unexplained congestions just like that.
 
 And so, this mod makes changes such that:
 [list]
 [*]Passengers will board the metro by each of their own closest trailer, until the metro is full
 [*]Most of the time, this means the passengers will board the trailer in front of them, saving boarding time
+[*]I have also made it such that passengers board metros, buses, etc in a first-come-first-served basis
+[*]Most of the time, this means the wait-timer of passengers will stay consistently low where possible, and car traffic should decrease
 [/list]
 
 [h1]What you can do with this mod[/h1]
@@ -36,6 +51,7 @@ With this mod enabled, you can do the following:
 [list]
 [*]Have city-centre metro lines that actually work
 [*]Have long-distance inner-city train lines that actually work
+[*]Have frequent-service bus lines (long or short) that actually work
 [*]Generally increases the efficiency of inner-city transportation
 [/list]
 [h1]GitHub Repo[/h1]
@@ -47,6 +63,8 @@ And that's all!
 
 我知道地鐵嘅優勢係例如可以有好高嘅載客量，但我總係覺得遊戲入面嘅地鐵嘅效能比想像中差好多。
 
+同時間，巴士亦有類似問題。即使我已經派夠車，應該夠載，但巴士乘客亦經常等得太耐提早放棄等車。
+
 後來發覺原來係因為本game處理乘客上車嘅時候用咗一個簡單嘅步驟，但係呢個步驟會喺滿座「上唔晒」嘅情況下出現問題：
 [list]
 [*]乘客上車時，先由車頭到車尾，前往任何車卡上車，直至滿座
@@ -54,10 +72,19 @@ And that's all!
 [/list]
 惡性循環出現了：地鐵上車出現延誤，導致下一站有更多人等車，更容易滿載。
 
+而同樣嘅步驟亦都令巴士(以及其他公共交通)唔能夠正常上客：
+[list]
+[*]上車步驟並冇留意乘客等車嘅先後次序
+[*]呢個經常導致中途站出現以下情況：當巴士唔夠載時，將會有一批乘客總係上唔到車
+[/list]
+問題出現：呢班「被忽略」嘅乘客，一係就直接放棄，一係就轉用私家車，加劇塞車。
+
 因此，本mod作出以下修改：
 [list]
 [*]乘客上車時，會先各自選擇最接近自己嘅車卡上車，直至滿座
 [*]通常情況下，乘客會登上面前嘅車卡，節省上車時間
+[*]我亦都指示，地鐵、巴士等等乘客上車時，以「先到先上」次序上車
+[*]通常情況下，等車時間將會降低，亦都減少私家車使用量
 [/list]
 
 [h1]有何好處?[/h1]
@@ -65,5 +92,6 @@ And that's all!
 [list]
 [*]市區地鐵：高載客量、減少延誤
 [*]市郊鐵路：大站上落客不再係一個黑洞
+[*]車海巴士(或其他公共交通)：人進得去，車出得來，車海發大財
 [*]改善市內交通效率
 [/list]
