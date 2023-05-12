@@ -40,7 +40,7 @@ namespace BetterTrainBoarding
             public static int ComparePriority(PassengerChoice a, PassengerChoice b)
             {
                 // place the one with a higher waitCounter to the front;
-                return a.waitCounter - b.waitCounter;
+                return b.waitCounter - a.waitCounter;
             }
         }
 
