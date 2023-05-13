@@ -40,6 +40,7 @@ namespace BetterTrainBoarding
             public static int ComparePriority(PassengerChoice a, PassengerChoice b)
             {
                 // place the one with a higher waitCounter to the front;
+                // note: waitCounter is about how long the passenger has been waiting, and it increases as time goes on until it reaches 255, where the passenger gives up waiting.
                 return b.waitCounter - a.waitCounter;
             }
         }
