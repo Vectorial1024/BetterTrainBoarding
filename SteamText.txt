@@ -54,6 +54,9 @@ With this mod enabled, you can do the following:
 [*]Have frequent-service bus lines (long or short) that actually work
 [*]Generally increases the efficiency of inner-city transportation
 [/list]
+Interestingly, one good side effect of this mod is that external connection passenger transport (e.g. planes, ships, etc) now almost always spawn with full passenger load,
+so this mod has applications beyond simply improving passenger train boarding.
+
 [h1]GitHub Repo[/h1]
 This mod is open-sourced, and the repo is available here: https://github.com/Vectorial1024/BetterTrainBoarding
 
@@ -95,3 +98,5 @@ And that's all!
 [*]車海巴士(或其他公共交通)：人進得去，車出得來，車海發大財
 [*]改善市內交通效率
 [/list]
+
+有趣地，使用本mod可同時享用一個良好副作用：地圖聯外交通車輛(例如飛機、郵輪等)會先盡量上滿乘客，然後再出現。
