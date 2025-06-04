@@ -378,11 +378,19 @@ namespace BetterTrainBoarding
             var citizenManager = Singleton<CitizenManager>.instance;
             var maxRank = paxRankedChoice.GetLength(0);
             var paxCount = paxRankedChoice.GetLength(1);
+            var boardedPaxIDs = new HashSet<ushort>();
             for (var currentRank = 0; currentRank < maxRank; currentRank++)
             {
                 for (var currentPaxIndex = 0; currentPaxIndex < paxCount; currentPaxIndex++)
                 {
                     var currentRankedChoice = paxRankedChoice[currentRank, currentPaxIndex];
+                    // check whether we need to do this
+                    var citizenID = currentRankedChoice.citizenID;
+                    if (boardedPaxIDs.Contains(citizenID))
+                    {
+                        // already boarded; skip
+                        continue;
+                    }
                     // directly check whether the vehicle still has space
                     var chosenVehicleID = currentRankedChoice.vehicleID;
                     var freeCitUnitID = vehicleBuffer[chosenVehicleID].GetNotFullCitizenUnit(CitizenUnit.Flags.Vehicle);
@@ -392,7 +400,6 @@ namespace BetterTrainBoarding
                         continue;
                     }
                     // has space; try assigning the citizen
-                    var citizenID = currentRankedChoice.citizenID;
                     ref var citizenInstance = ref citizenManager.m_instances.m_buffer[citizenID];
                     var citizenInfo = citizenInstance.Info;
                     if (!citizenInfo.m_citizenAI.SetCurrentVehicle(citizenID, ref citizenInstance, chosenVehicleID, freeCitUnitID, stopPosition))
@@ -403,6 +410,7 @@ namespace BetterTrainBoarding
                     // successful assignment
                     serviceCount++;
                     vehicleBuffer[chosenVehicleID].m_transferSize++;
+                    boardedPaxIDs.Add(citizenID);
                     freeSpaceRemaining--;
                     if (freeSpaceRemaining <= 0)
                     {
