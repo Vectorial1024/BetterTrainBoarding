@@ -2,7 +2,7 @@
 
 namespace BetterTrainBoarding
 {
-    public class CommonActionBetterBoarding
+    public static class CommonActionBetterBoarding
     {
         public static bool HandleBetterBoarding(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using ColossalFramework;
 using UnityEngine;
 
@@ -14,7 +15,33 @@ namespace BetterTrainBoarding.DataTypes
 
         public Vector3 NextStopPosition { get; private set; }
 
-        private Dictionary<ushort, Vector3> _waitingPaxDict = new Dictionary<ushort, Vector3>();
+        public struct PassengerInfo
+        {
+            public ushort CitizenID { get; }
+            public Vector3 Position { get; }
+            public byte WaitCounter { get; }
+
+            public PassengerInfo(ushort citizenID, Vector3 position, byte waitCounter)
+            {
+                this.CitizenID = citizenID;
+                this.Position = position;
+                this.WaitCounter = waitCounter;
+            }
+        }
+
+        private Dictionary<ushort, PassengerInfo> _paxInfoDict = new Dictionary<ushort, PassengerInfo>();
+
+        public List<PassengerInfo> SortedPassengers
+        {
+            get
+            {
+                // sorted by waiting priority
+                var tempList = _paxInfoDict.Values.ToList();
+                // greater values go first
+                tempList.Sort((left, right) => right.WaitCounter.CompareTo(left.WaitCounter));
+                return tempList;
+            }
+        }
 
         public PassengerWaitingInfo(ushort currentStopID, ushort nextStopID)
         {
@@ -59,7 +86,7 @@ namespace BetterTrainBoarding.DataTypes
                                 if (citizenInfo.m_citizenAI.TransportArriveAtSource(currentCitizenID, ref currentCitizenInstance, CurrentStopPosition, NextStopPosition))
                                 {
                                     // will board; remember this citizen for later!
-                                    _waitingPaxDict.Add(currentCitizenID, vector);
+                                    _paxInfoDict[currentCitizenID] = new PassengerInfo(currentCitizenID, vector, currentCitizenInstance.m_waitCounter);
                                 }
                             }
                         }

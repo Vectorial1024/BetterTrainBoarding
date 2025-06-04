@@ -326,6 +326,41 @@ namespace BetterTrainBoarding
 
             var trainStatus = new TrainOccupancyInfo(vehicleID);
             var paxStatus = new PassengerWaitingInfo(currentStop, nextStop);
+            /*
+             * generate matches here! the flow is:
+             * each passenger indicates their vehicle choice, closest vehicle first
+             * then, process the first choice;
+             * then, process the second choice;
+             * ...
+             * do this until one of:
+             * - all are boarded
+             * - train is full
+             * best is if we can somehow know this as soon as possible to stop unnecessary iteration
+             */
+
+            // prepare ranked choices
+            var freeVehiclesList = trainStatus.FreeCompartments;
+            var maxRank = freeVehiclesList.Count;
+            var sortedPaxList = paxStatus.SortedPassengers;
+            var paxCount = sortedPaxList.Count;
+            var paxRankedChoice = new PassengerChoice[maxRank, paxCount];
+            var currentPaxIndex = 0;
+            foreach (var paxInfo in sortedPaxList)
+            {
+                // find nth closest vehicle
+                var paxPosition = paxInfo.Position;
+                // since the actual order of the free compartments list does not matter, we can use it to conveniently "sort by distance to passenger"
+                var sortedVehicles = freeVehiclesList.OrderBy((item) => Vector3.Distance(paxPosition, item.Position));
+                var rank = 0;
+                foreach (var vehicle in sortedVehicles)
+                {
+                    paxRankedChoice[rank, currentPaxIndex] = new PassengerChoice(paxInfo.CitizenID, paxInfo.WaitCounter, vehicle.VehicleID);
+                    ++rank;
+                }
+                ++currentPaxIndex;
+            }
+
+            // ranked choices ready; process them!
         }
     }
 }

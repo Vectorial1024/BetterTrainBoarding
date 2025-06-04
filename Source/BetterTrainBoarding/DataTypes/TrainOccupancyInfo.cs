@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using ColossalFramework;
 
 namespace BetterTrainBoarding.DataTypes
@@ -8,6 +9,8 @@ namespace BetterTrainBoarding.DataTypes
         public ushort FirstVehicleID { get; private set; }
 
         private Dictionary<ushort, VehicleOccupancyInfo> _compartmentOccupancy = new Dictionary<ushort, VehicleOccupancyInfo>();
+
+        public List<VehicleOccupancyInfo> FreeCompartments => _compartmentOccupancy.Values.Where((item) => !item.IsFull).ToList();
 
         public TrainOccupancyInfo(ushort vehicleID)
         {
