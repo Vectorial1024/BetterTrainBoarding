@@ -15,8 +15,10 @@ namespace BetterTrainBoarding
     public class Prefix_PassengerTrainAI_LoadPassengers
     {
         [HarmonyPrefix]
-        public static bool PreFix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
+        public static bool LoadPassengersBetter(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
+            PassengerTrainUtility.HandleBetterBoarding(vehicleID, ref data, currentStop, nextStop);
+            return false;
             // BusPickDropLookupTable.DetermineIfBusShouldDepart(ref __result, vehicleID, ref vehicleData);
             bool isFull;
             List<PassengerTrainUtility.CompartmentInfo> analysis;
