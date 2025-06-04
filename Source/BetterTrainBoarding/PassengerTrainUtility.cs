@@ -366,12 +366,21 @@ namespace BetterTrainBoarding
             // ranked choices ready; process them!
             var instance3 = Singleton<NetManager>.instance;
             var num = instance3.m_nodes.m_buffer[currentStop].m_tempCounter;
+            ProcessRankedChoices(paxRankedChoice, paxStatus.CurrentStopPosition, trainStatus.FreeCapacity, ref num);
+
+            // finalize the stuff
+            instance3.m_nodes.m_buffer[currentStop].m_tempCounter = (ushort)Mathf.Min(num, 65535);
+        }
+
+        private static void ProcessRankedChoices(PassengerChoice[,] paxRankedChoice, Vector3 stopPosition, int freeSpaceRemaining, ref ushort serviceCount)
+        {
             ref var vehicleBuffer = ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer;
             var citizenManager = Singleton<CitizenManager>.instance;
-            var freeSpaceRemaining = trainStatus.FreeCapacity;
+            var maxRank = paxRankedChoice.GetLength(0);
+            var paxCount = paxRankedChoice.GetLength(1);
             for (var currentRank = 0; currentRank < maxRank; currentRank++)
             {
-                for (currentPaxIndex = 0; currentPaxIndex < paxCount; currentPaxIndex++)
+                for (var currentPaxIndex = 0; currentPaxIndex < paxCount; currentPaxIndex++)
                 {
                     var currentRankedChoice = paxRankedChoice[currentRank, currentPaxIndex];
                     // directly check whether the vehicle still has space
@@ -386,30 +395,22 @@ namespace BetterTrainBoarding
                     var citizenID = currentRankedChoice.citizenID;
                     ref var citizenInstance = ref citizenManager.m_instances.m_buffer[citizenID];
                     var citizenInfo = citizenInstance.Info;
-                    if (!citizenInfo.m_citizenAI.SetCurrentVehicle(citizenID, ref citizenInstance, chosenVehicleID, freeCitUnitID, paxStatus.CurrentStopPosition))
+                    if (!citizenInfo.m_citizenAI.SetCurrentVehicle(citizenID, ref citizenInstance, chosenVehicleID, freeCitUnitID, stopPosition))
                     {
                         // somehow couldn't do it; try next
                         continue;
                     }
                     // successful assignment
-                    num++;
+                    serviceCount++;
                     vehicleBuffer[chosenVehicleID].m_transferSize++;
                     freeSpaceRemaining--;
                     if (freeSpaceRemaining <= 0)
                     {
                         // vehicle full; stop!
-                        break;
+                        return;
                     }
                 }
-                if (freeSpaceRemaining <= 0)
-                {
-                    // vehicle full; stop!
-                    break;
-                }
             }
-
-            // finalize the stuff
-            instance3.m_nodes.m_buffer[currentStop].m_tempCounter = (ushort)Mathf.Min(num, 65535);
         }
     }
 }
