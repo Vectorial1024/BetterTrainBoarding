@@ -47,14 +47,20 @@ namespace BetterTrainBoarding.DataTypes
                     int num7 = 0;
                     while (currentCitizenID != 0)
                     {
-                        ushort nextGridInstance = citizenManager.m_instances.m_buffer[currentCitizenID].m_nextGridInstance;
-                        if ((citizenManager.m_instances.m_buffer[currentCitizenID].m_flags & CitizenInstance.Flags.WaitingTransport) != 0)
+                        ref var currentCitizenInstance = ref citizenManager.m_instances.m_buffer[currentCitizenID];
+                        ushort nextGridInstance = currentCitizenInstance.m_nextGridInstance;
+                        if ((currentCitizenInstance.m_flags & CitizenInstance.Flags.WaitingTransport) != 0)
                         {
-                            Vector3 vector = citizenManager.m_instances.m_buffer[currentCitizenID].m_targetPos;
+                            Vector3 vector = currentCitizenInstance.m_targetPos;
                             if (Vector3.SqrMagnitude(vector - position) < 4096f)
                             {
-                                // within range; remember this citizen for later!
-                                _waitingPaxDict.Add(currentCitizenID, vector);
+                                // within range; will this citizen ever board the vehicle?
+                                var citizenInfo = currentCitizenInstance.Info;
+                                if (citizenInfo.m_citizenAI.TransportArriveAtSource(currentCitizenID, ref currentCitizenInstance, CurrentStopPosition, NextStopPosition))
+                                {
+                                    // will board; remember this citizen for later!
+                                    _waitingPaxDict.Add(currentCitizenID, vector);
+                                }
                             }
                         }
                         currentCitizenID = nextGridInstance;
