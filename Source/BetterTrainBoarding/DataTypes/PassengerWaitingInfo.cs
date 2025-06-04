@@ -71,7 +71,6 @@ namespace BetterTrainBoarding.DataTypes
                 for (var j = capXLower; j <= capXUpper; j++)
                 {
                     ushort currentCitizenID = citizenManager.m_citizenGrid[i * 2160 + j];
-                    int num7 = 0;
                     while (currentCitizenID != 0)
                     {
                         ref var currentCitizenInstance = ref citizenManager.m_instances.m_buffer[currentCitizenID];
