@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BetterTrainBoarding.DataTypes;
 using UnityEngine;
 using static Vehicle;
 
@@ -322,6 +323,8 @@ namespace BetterTrainBoarding
             {
                 return;
             }
+
+            var trainStatus = new TrainOccupancyInfo(vehicleID);
         }
     }
 }
