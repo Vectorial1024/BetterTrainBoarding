@@ -368,7 +368,7 @@ namespace BetterTrainBoarding
             var freeSpaceRemaining = trainStatus.FreeCapacity;
             for (var currentRank = 0; currentRank < maxRank; currentRank++)
             {
-                for (currentPaxIndex = 0; currentPaxIndex < maxRank; currentPaxIndex++)
+                for (currentPaxIndex = 0; currentPaxIndex < paxCount; currentPaxIndex++)
                 {
                     var currentRankedChoice = paxRankedChoice[currentRank, currentPaxIndex];
                     // directly check whether the vehicle still has space
