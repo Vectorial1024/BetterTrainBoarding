@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="BetterTrainBoarding.cs" />
     <Compile Include="CommonActionBetterBoarding.cs" />
+    <Compile Include="DataTypes\TrainOccupancyInfo.cs" />
     <Compile Include="DataTypes\VehicleOccupancyInfo.cs" />
     <Compile Include="PassengerTrainUtility.cs" />
     <Compile Include="PatchController.cs" />
