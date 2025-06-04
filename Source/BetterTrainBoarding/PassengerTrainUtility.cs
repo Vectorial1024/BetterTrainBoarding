@@ -345,6 +345,7 @@ namespace BetterTrainBoarding
             var paxCount = sortedPaxList.Count;
             var paxRankedChoice = new PassengerChoice[maxRank, paxCount];
             var currentPaxIndex = 0;
+            var debugString = new StringBuilder();
             foreach (var paxInfo in sortedPaxList)
             {
                 // find nth closest vehicle
@@ -355,10 +356,12 @@ namespace BetterTrainBoarding
                 foreach (var vehicle in sortedVehicles)
                 {
                     paxRankedChoice[rank, currentPaxIndex] = new PassengerChoice(paxInfo.CitizenID, paxInfo.WaitCounter, vehicle.VehicleID);
+                    debugString.AppendLine($"Pax {paxInfo.CitizenID} rank {rank} picks vehicle {vehicle.VehicleID}");
                     ++rank;
                 }
                 ++currentPaxIndex;
             }
+            Debug.LogError(debugString.ToString());
 
             // ranked choices ready; process them!
             var instance3 = Singleton<NetManager>.instance;
