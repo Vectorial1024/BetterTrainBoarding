@@ -1,3 +1,4 @@
+using System;
 using ColossalFramework;
 
 namespace BetterTrainBoarding.DataTypes
@@ -6,9 +7,11 @@ namespace BetterTrainBoarding.DataTypes
     {
         public ushort VehicleID { get; private set; }
 
-        public int Occupancy { get; private set; }
+        public int Occupancy { get; }
 
-        public int Capacity { get; private set; }
+        public int ActualCapacity { get; }
+
+        public bool IsFull => Occupancy >= ActualCapacity;
 
         public VehicleOccupancyInfo(ushort vehicleID)
         {
@@ -18,11 +21,11 @@ namespace BetterTrainBoarding.DataTypes
             var vehicleManager = Singleton<VehicleManager>.instance;
             var citizenManager = Singleton<CitizenManager>.instance;
 
-            var vehicleInfo = vehicleManager.m_vehicles.m_buffer[vehicleID];
-            Occupancy = vehicleInfo.m_transferSize;
+            var vehicleInstance = vehicleManager.m_vehicles.m_buffer[vehicleID];
+            Occupancy = vehicleInstance.m_transferSize;
 
-            // iterate the list to find capacity
-            var currentCitizenUnit = vehicleInfo.m_citizenUnits;
+            // iterate the list to find actual capacity
+            var currentCitizenUnit = vehicleInstance.m_citizenUnits;
             var citizenUnitCount = 0;
             while (currentCitizenUnit != 0)
             {
@@ -30,7 +33,9 @@ namespace BetterTrainBoarding.DataTypes
                 currentCitizenUnit = citizenManager.m_units.m_buffer[currentCitizenUnit].m_nextUnit;
             }
 
-            Capacity = citizenUnitCount * 5;
+            // we do this so we can catch potential edge case of not having enough citizen units, while maintaining asset-stats correctness
+            var nominalCapacity = vehicleInstance.Info.m_vehicleAI.GetPassengerCapacity(false);
+            ActualCapacity = Math.Min(citizenUnitCount * 5, nominalCapacity);
         }
     }
 }
