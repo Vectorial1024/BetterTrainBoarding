@@ -345,7 +345,7 @@ namespace BetterTrainBoarding
             var paxCount = sortedPaxList.Count;
             var paxRankedChoice = new PassengerChoice[maxRank, paxCount];
             var currentPaxIndex = 0;
-            var debugString = new StringBuilder();
+            // var debugString = new StringBuilder();
             foreach (var paxInfo in sortedPaxList)
             {
                 // find nth closest vehicle
@@ -356,12 +356,12 @@ namespace BetterTrainBoarding
                 foreach (var vehicle in sortedVehicles)
                 {
                     paxRankedChoice[rank, currentPaxIndex] = new PassengerChoice(paxInfo.CitizenID, paxInfo.WaitCounter, vehicle.VehicleID);
-                    debugString.AppendLine($"Pax {paxInfo.CitizenID} rank {rank} picks vehicle {vehicle.VehicleID}");
+                    // debugString.AppendLine($"Pax {paxInfo.CitizenID} rank {rank} picks vehicle {vehicle.VehicleID}");
                     ++rank;
                 }
                 ++currentPaxIndex;
             }
-            Debug.LogError(debugString.ToString());
+            // Debug.LogError(debugString.ToString());
 
             // ranked choices ready; process them!
             var instance3 = Singleton<NetManager>.instance;
@@ -375,7 +375,8 @@ namespace BetterTrainBoarding
                 {
                     var currentRankedChoice = paxRankedChoice[currentRank, currentPaxIndex];
                     // directly check whether the vehicle still has space
-                    var freeCitUnitID = vehicleBuffer[vehicleID].GetNotFullCitizenUnit(CitizenUnit.Flags.Vehicle);
+                    var chosenVehicleID = currentRankedChoice.vehicleID;
+                    var freeCitUnitID = vehicleBuffer[chosenVehicleID].GetNotFullCitizenUnit(CitizenUnit.Flags.Vehicle);
                     if (freeCitUnitID == 0)
                     {
                         // nope
@@ -383,9 +384,9 @@ namespace BetterTrainBoarding
                     }
                     // has space; try assigning the citizen
                     var citizenID = currentRankedChoice.citizenID;
-                    var chosenVehicleID = currentRankedChoice.vehicleID;
-                    var citizenInfo = citizenManager.m_instances.m_buffer[citizenID].Info;
-                    if (!citizenInfo.m_citizenAI.SetCurrentVehicle(citizenID, ref citizenManager.m_instances.m_buffer[citizenID], chosenVehicleID, freeCitUnitID, paxStatus.CurrentStopPosition))
+                    ref var citizenInstance = ref citizenManager.m_instances.m_buffer[citizenID];
+                    var citizenInfo = citizenInstance.Info;
+                    if (!citizenInfo.m_citizenAI.SetCurrentVehicle(citizenID, ref citizenInstance, chosenVehicleID, freeCitUnitID, paxStatus.CurrentStopPosition))
                     {
                         // somehow couldn't do it; try next
                         continue;
