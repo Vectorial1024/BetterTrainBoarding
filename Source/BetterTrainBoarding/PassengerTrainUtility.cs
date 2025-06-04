@@ -341,8 +341,20 @@ namespace BetterTrainBoarding
             // prepare ranked choices
             var freeVehiclesList = trainStatus.FreeCompartments;
             var maxRank = freeVehiclesList.Count;
+            if (maxRank == 0)
+            {
+                // no free vehicles; simply stop
+                return;
+            }
             var sortedPaxList = paxStatus.SortedPassengers;
             var paxCount = sortedPaxList.Count;
+            var freeCapacity = trainStatus.FreeCapacity;
+            if (maxRank == 1 && paxCount > freeCapacity)
+            {
+                // optimization: if there is only 1 possible vehicle, and there are too many passengers
+                // then we can simply look at the first k passengers, where k = free space remaining
+                sortedPaxList = sortedPaxList.GetRange(0, freeCapacity);
+            }
             var paxRankedChoice = new PassengerChoice[maxRank, paxCount];
             var currentPaxIndex = 0;
             // var debugString = new StringBuilder();
@@ -366,7 +378,7 @@ namespace BetterTrainBoarding
             // ranked choices ready; process them!
             var instance3 = Singleton<NetManager>.instance;
             var num = instance3.m_nodes.m_buffer[currentStop].m_tempCounter;
-            ProcessRankedChoices(paxRankedChoice, paxStatus.CurrentStopPosition, trainStatus.FreeCapacity, ref num);
+            ProcessRankedChoices(paxRankedChoice, paxStatus.CurrentStopPosition, freeCapacity, ref num);
 
             // finalize the stuff
             instance3.m_nodes.m_buffer[currentStop].m_tempCounter = (ushort)Mathf.Min(num, 65535);
