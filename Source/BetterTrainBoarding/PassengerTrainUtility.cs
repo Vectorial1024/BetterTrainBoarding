@@ -314,5 +314,14 @@ namespace BetterTrainBoarding
             // finalize
             instance3.m_nodes.m_buffer[currentStop].m_tempCounter = (ushort)Mathf.Min(num, 65535);
         }
+
+        public static void HandleBetterBoarding(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
+        {
+            // the one-stop replacement to LoadPassengers
+            if (currentStop == 0 || nextStop == 0)
+            {
+                return;
+            }
+        }
     }
 }
