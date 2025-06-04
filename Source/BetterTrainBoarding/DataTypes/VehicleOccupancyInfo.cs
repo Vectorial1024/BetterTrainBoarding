@@ -1,15 +1,18 @@
 using System;
 using ColossalFramework;
+using UnityEngine;
 
 namespace BetterTrainBoarding.DataTypes
 {
     public class VehicleOccupancyInfo
     {
-        public ushort VehicleID { get; private set; }
+        public ushort VehicleID { get; }
 
         public int Occupancy { get; }
 
         public int ActualCapacity { get; }
+
+        public Vector3 Position { get; }
 
         public bool IsFull => Occupancy >= ActualCapacity;
 
@@ -22,6 +25,7 @@ namespace BetterTrainBoarding.DataTypes
             var citizenManager = Singleton<CitizenManager>.instance;
 
             var vehicleInstance = vehicleManager.m_vehicles.m_buffer[vehicleID];
+            Position = vehicleManager.m_vehicles.m_buffer[vehicleID].GetLastFrameData().m_position;
             Occupancy = vehicleInstance.m_transferSize;
 
             // iterate the list to find actual capacity

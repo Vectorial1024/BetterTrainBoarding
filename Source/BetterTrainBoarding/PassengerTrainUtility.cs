@@ -325,6 +325,7 @@ namespace BetterTrainBoarding
             }
 
             var trainStatus = new TrainOccupancyInfo(vehicleID);
+            var paxStatus = new PassengerWaitingInfo(currentStop, nextStop);
         }
     }
 }
