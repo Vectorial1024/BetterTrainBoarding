@@ -361,6 +361,51 @@ namespace BetterTrainBoarding
             }
 
             // ranked choices ready; process them!
+            var instance3 = Singleton<NetManager>.instance;
+            var num = instance3.m_nodes.m_buffer[currentStop].m_tempCounter;
+            ref var vehicleBuffer = ref Singleton<VehicleManager>.instance.m_vehicles.m_buffer;
+            var citizenManager = Singleton<CitizenManager>.instance;
+            var freeSpaceRemaining = trainStatus.FreeCapacity;
+            for (var currentRank = 0; currentRank < maxRank; currentRank++)
+            {
+                for (currentPaxIndex = 0; currentPaxIndex < maxRank; currentPaxIndex++)
+                {
+                    var currentRankedChoice = paxRankedChoice[currentRank, currentPaxIndex];
+                    // directly check whether the vehicle still has space
+                    var freeCitUnitID = vehicleBuffer[vehicleID].GetNotFullCitizenUnit(CitizenUnit.Flags.Vehicle);
+                    if (freeCitUnitID == 0)
+                    {
+                        // nope
+                        continue;
+                    }
+                    // has space; try assigning the citizen
+                    var citizenID = currentRankedChoice.citizenID;
+                    var chosenVehicleID = currentRankedChoice.vehicleID;
+                    var citizenInfo = citizenManager.m_instances.m_buffer[citizenID].Info;
+                    if (!citizenInfo.m_citizenAI.SetCurrentVehicle(citizenID, ref citizenManager.m_instances.m_buffer[citizenID], chosenVehicleID, freeCitUnitID, paxStatus.CurrentStopPosition))
+                    {
+                        // somehow couldn't do it; try next
+                        continue;
+                    }
+                    // successful assignment
+                    num++;
+                    vehicleBuffer[chosenVehicleID].m_transferSize++;
+                    freeSpaceRemaining--;
+                    if (freeSpaceRemaining <= 0)
+                    {
+                        // vehicle full; stop!
+                        break;
+                    }
+                }
+                if (freeSpaceRemaining <= 0)
+                {
+                    // vehicle full; stop!
+                    break;
+                }
+            }
+
+            // finalize the stuff
+            instance3.m_nodes.m_buffer[currentStop].m_tempCounter = (ushort)Mathf.Min(num, 65535);
         }
     }
 }

@@ -12,6 +12,19 @@ namespace BetterTrainBoarding.DataTypes
 
         public List<VehicleOccupancyInfo> FreeCompartments => _compartmentOccupancy.Values.Where((item) => !item.IsFull).ToList();
 
+        public int FreeCapacity
+        {
+            get
+            {
+                var counter = 0;
+                foreach (var compartment in FreeCompartments)
+                {
+                    counter += compartment.ActualCapacity - compartment.Occupancy;
+                }
+                return counter;
+            }
+        }
+
         public TrainOccupancyInfo(ushort vehicleID)
         {
             // find the vehicle ID of the first vehicle first
