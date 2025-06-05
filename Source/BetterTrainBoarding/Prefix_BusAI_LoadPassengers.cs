@@ -13,7 +13,6 @@ namespace BetterTrainBoarding
         {
             PassengerTrainUtility.HandleBetterBoarding(vehicleID, ref data, currentStop, nextStop);
             return false;
-            // return CommonActionBetterBoarding.HandleBetterBoarding(vehicleID, ref data, currentStop, nextStop);
         }
     }
 }

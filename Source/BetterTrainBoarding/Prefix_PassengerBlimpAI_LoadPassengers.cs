@@ -9,9 +9,10 @@ namespace BetterTrainBoarding
     public class Prefix_PassengerBlimpAI_LoadPassengers
     {
         [HarmonyPrefix]
-        public static bool PreFix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
+        public static bool LoadPassengersBetter(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
-            return CommonActionBetterBoarding.HandleBetterBoarding(vehicleID, ref data, currentStop, nextStop);
+            PassengerTrainUtility.HandleBetterBoarding(vehicleID, ref data, currentStop, nextStop);
+            return false;
         }
     }
 }

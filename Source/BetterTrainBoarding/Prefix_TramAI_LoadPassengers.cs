@@ -13,19 +13,10 @@ namespace BetterTrainBoarding
     public class Prefix_TramAI_LoadPassengers
     {
         [HarmonyPrefix]
-        public static bool PreFix(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
+        public static bool LoadPassengersBetter(ushort vehicleID, ref Vehicle data, ushort currentStop, ushort nextStop)
         {
-            // BusPickDropLookupTable.DetermineIfBusShouldDepart(ref __result, vehicleID, ref vehicleData);
-            bool isFull;
-            List<PassengerTrainUtility.CompartmentInfo> analysis;
-            PassengerTrainUtility.AnalyzeTrain(vehicleID, out isFull, out analysis);
-            if (!isFull)
-            {
-                // this gets triggered 99% of the time, but eh who cares.
-                PassengerTrainUtility.SensiblyLoadPassengers(vehicleID, currentStop, nextStop, analysis);
-                return false;
-            }
-            return true;
+            PassengerTrainUtility.HandleBetterBoarding(vehicleID, ref data, currentStop, nextStop);
+            return false;
         }
     }
 }

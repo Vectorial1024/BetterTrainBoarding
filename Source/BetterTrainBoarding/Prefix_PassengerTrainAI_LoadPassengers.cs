@@ -19,17 +19,6 @@ namespace BetterTrainBoarding
         {
             PassengerTrainUtility.HandleBetterBoarding(vehicleID, ref data, currentStop, nextStop);
             return false;
-            // BusPickDropLookupTable.DetermineIfBusShouldDepart(ref __result, vehicleID, ref vehicleData);
-            bool isFull;
-            List<PassengerTrainUtility.CompartmentInfo> analysis;
-            PassengerTrainUtility.AnalyzeTrain(vehicleID, out isFull, out analysis);
-            if (!isFull)
-            {
-                // this gets triggered 99% of the time, but eh who cares.
-                PassengerTrainUtility.SensiblyLoadPassengers(vehicleID, currentStop, nextStop, analysis);
-                return false;
-            }
-            return true;
         }
     }
 }
