@@ -63,7 +63,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BetterTrainBoarding.cs" />
-    <Compile Include="CommonActionBetterBoarding.cs" />
     <Compile Include="DataTypes\PassengerWaitingInfo.cs" />
     <Compile Include="DataTypes\TrainOccupancyInfo.cs" />
     <Compile Include="DataTypes\VehicleOccupancyInfo.cs" />

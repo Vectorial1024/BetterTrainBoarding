@@ -5,13 +5,7 @@ namespace BetterTrainBoarding
 {
     internal class PatchController
     {
-        public static string HarmonyModID
-        {
-            get
-            {
-                return "com.vectorial1024.cities.btb";
-            }
-        }
+        public static string HarmonyModID => "com.vectorial1024.cities.btb";
 
         /*
          * The "singleton" design is pretty straight-forward.
@@ -32,15 +26,11 @@ namespace BetterTrainBoarding
         public static void Activate()
         {
             GetHarmonyInstance().PatchAll(Assembly.GetExecutingAssembly());
-            //BusPickDropLookupTable.EnsureTableExists();
-            //CitizenRunawayTable.EnsureTableExists();
         }
 
         public static void Deactivate()
         {
             GetHarmonyInstance().UnpatchAll(HarmonyModID);
-            //BusPickDropLookupTable.WipeTable();
-            //CitizenRunawayTable.WipeTable();
         }
 
         public const string ExpressBusServicesHarmonyID = "com.vectorial1024.cities.ebs";
