@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace BetterTrainBoarding
 {
-    internal class PatchController
+    internal static class PatchController
     {
         public static string HarmonyModID => "com.vectorial1024.cities.btb";
 
