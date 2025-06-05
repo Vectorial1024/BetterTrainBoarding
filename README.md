@@ -3,6 +3,8 @@ Unlock the peak efficiency of trains (and also metros) by fixing boarding behavi
 
 - Passengers board trains (and metros) sensibly by each preferring the closest compartment
   - To be explained below
+- Passengers board trains with some respect to the "wait counter" (aka "first come first served")
+  - To be explained below
 
 # Mod Status
 - No known compatibility problems
@@ -16,16 +18,12 @@ These transportation types are currently covered by this mod:
   - Trains
   - Metros
 - Trams
+- Buses/Trolleybuses
+- Airplanes
+- Blimps
+- Helicopters
 
 Note: While not directly tested and unprovable from static analysis, monorails should also be covered as well. Do notify me if I am wrong.
-
-These transportation types are not yet covered, but are at a low priority:
-- Buses
-- Trolleybuses
-
-They are low priority because of their relatively small size compared to trains and metros. While they will have the same behavior when you utilize multi-trailer buses/trams etc, the effects are less obvious, and are negligible. At least for now.
-
-Unless you are using mods that modify CIM's walking speed, but still, those mod would scale up boarding time quite fairly across all types of transportation, so ultimately the boarding time of e.g. buses are still "comparatively negligible".
 
 ## Motivation
 
@@ -61,14 +59,13 @@ For each waiting passenger, identify their ranked choices of preferred trailer o
 (ie, they prefer the trailer that is closest to them, and then the 2nd closest, ...)
 
 Note: # of ranked choices = # of trailers that the train has
-For each available rank: 
-    Sort the ranked choices: passengers that have waited a long time will be prioritized
+For each available rank:
+    Sort the ranked choices: passengers that have waited a long time will be prioritized for processing
     Try to satisfy their choice by checking whether the chosen trailer is actually free:
         If free, then passenger enters that trailer
-        Else try the next ranked choice
-
+        Else try the choice of the next passenger
 ```
 
-The negative feedback loop is greatly reduced. When the train/metro cannot load all the passengers at the platform, passengers who cannot board the train/metro are somewhat evenly distributed along the platform, and when there are space available, passengers can board the train/metro intelligently and efficiently. There may still be some passengers who need to move to a compartment far from where they are waiting the train/metro, but their number has been greatly reduced. This minimizes delay.
+The negative feedback loop is greatly reduced. When the train/metro cannot load all the passengers at the platform, passengers who cannot board the train/metro are somewhat evenly distributed along the platform, and when there are space available, passengers can board the train/metro intelligently and efficiently. There may still be some passengers who need to move to a compartment far from where they are waiting the train/metro, but this occurence has been greatly reduced. This minimizes delay: the bottleneck then becomes unbunching and track status.
 
-Moreover, this algorithm prioritizes those passengers that have waited too much time. This reduces usage of "pocket cars" among passengers.
+Moreover, this algorithm prioritizes passengers that have waited too long. This reduces usage of "pocket cars" among passengers, which significantly limits the situation from spiraling out of control.
