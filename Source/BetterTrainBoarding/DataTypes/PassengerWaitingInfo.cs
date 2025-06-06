@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
@@ -66,6 +67,7 @@ namespace BetterTrainBoarding.DataTypes
 
             // find citizens waiting at the stop
             var citizenManager = Singleton<CitizenManager>.instance;
+            var iterationCount = 0;
             for (var i = capZLower; i <= capZUpper; i++)
             {
                 for (var j = capXLower; j <= capXUpper; j++)
@@ -90,6 +92,11 @@ namespace BetterTrainBoarding.DataTypes
                             }
                         }
                         currentCitizenID = nextGridInstance;
+                        if (++iterationCount > 65536)
+                        {
+                            CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
+                            break;
+                        }
                     }
                 }
             }

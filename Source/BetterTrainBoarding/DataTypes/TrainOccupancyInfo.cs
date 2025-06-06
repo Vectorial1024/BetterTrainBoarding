@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework;
@@ -33,8 +34,14 @@ namespace BetterTrainBoarding.DataTypes
             // then, iterate through the train to find per-vehicle occupancy
             var vehicleManager = Singleton<VehicleManager>.instance;
             var currentVehicleID = FirstVehicleID;
+            var iterationCount = 0;
             while (true)
             {
+                if (++iterationCount > 16384)
+                {
+                    CODebugBase<LogChannel>.Error(LogChannel.Core, "Invalid list detected!\n" + Environment.StackTrace);
+                    break;
+                }
                 var currentVehicleInstance = vehicleManager.m_vehicles.m_buffer[currentVehicleID];
                 _compartmentOccupancy[currentVehicleID] = new VehicleOccupancyInfo(currentVehicleID);
                 var nextVehicleID = currentVehicleInstance.m_trailingVehicle;
