@@ -6,26 +6,17 @@ using UnityEngine;
 
 namespace BetterTrainBoarding
 {
-    public class PassengerTrainUtility
+    public static class PassengerTrainUtility
     {
         public struct PassengerChoice
         {
-            public ushort citizenID;
-            public byte waitCounter;
-            public ushort vehicleID;
+            public readonly ushort CitizenID;
+            public readonly ushort VehicleID;
 
-            public PassengerChoice(ushort citizenID, byte waitCounter, ushort vehicleID)
+            public PassengerChoice(ushort citizenID, ushort vehicleID)
             {
-                this.citizenID = citizenID;
-                this.waitCounter = waitCounter;
-                this.vehicleID = vehicleID;
-            }
-
-            public static int ComparePriority(PassengerChoice a, PassengerChoice b)
-            {
-                // place the one with a higher waitCounter to the front;
-                // note: waitCounter is about how long the passenger has been waiting, and it increases as time goes on until it reaches 255, where the passenger gives up waiting.
-                return b.waitCounter - a.waitCounter;
+                CitizenID = citizenID;
+                VehicleID = vehicleID;
             }
         }
 
@@ -80,7 +71,7 @@ namespace BetterTrainBoarding
                 var rank = 0;
                 foreach (var vehicle in sortedVehicles)
                 {
-                    paxRankedChoice[rank, currentPaxIndex] = new PassengerChoice(paxInfo.CitizenID, paxInfo.WaitCounter, vehicle.VehicleID);
+                    paxRankedChoice[rank, currentPaxIndex] = new PassengerChoice(paxInfo.CitizenID, vehicle.VehicleID);
                     // debugString.AppendLine($"Pax {paxInfo.CitizenID} rank {rank} picks vehicle {vehicle.VehicleID}");
                     ++rank;
                 }
@@ -110,14 +101,14 @@ namespace BetterTrainBoarding
                 {
                     var currentRankedChoice = paxRankedChoice[currentRank, currentPaxIndex];
                     // check whether we need to do this
-                    var citizenID = currentRankedChoice.citizenID;
+                    var citizenID = currentRankedChoice.CitizenID;
                     if (boardedPaxIDs.Contains(citizenID))
                     {
                         // already boarded; skip
                         continue;
                     }
                     // directly check whether the vehicle still has space
-                    var chosenVehicleID = currentRankedChoice.vehicleID;
+                    var chosenVehicleID = currentRankedChoice.VehicleID;
                     var freeCitUnitID = vehicleBuffer[chosenVehicleID].GetNotFullCitizenUnit(CitizenUnit.Flags.Vehicle);
                     if (freeCitUnitID == 0)
                     {
