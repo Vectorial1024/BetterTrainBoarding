@@ -69,3 +69,23 @@ For each available rank:
 The negative feedback loop is greatly reduced. When the train/metro cannot load all the passengers at the platform, passengers who cannot board the train/metro are somewhat evenly distributed along the platform, and when there are space available, passengers can board the train/metro intelligently and efficiently. There may still be some passengers who need to move to a compartment far from where they are waiting the train/metro, but this occurence has been greatly reduced. This minimizes delay: the bottleneck then becomes unbunching and track status.
 
 Moreover, this algorithm prioritizes passengers that have waited too long. This reduces usage of "pocket cars" among passengers, which significantly limits the situation from spiraling out of control.
+
+### Beneficial side-effects to outside connections traffic
+After an unfortunate coding mistake, the mechanism for outside connection spawning has been revealed for all to witness, which basically confirms the following beneficial side effects of this mod:
+
+- Significantly decreased chances an outside connection vehicle arrives with free space
+- More regular intervals for outside connection vehicles
+- Therefore, decreased stress on the road/train network
+
+The relevant mechanism is basically this:
+
+```
+Each outside connection regularly spawns passengers (out of the scope of this mod)
+Each passenger has a wait-timer that slowly goes up (aka the "bored timer")
+When the wait-timer goes up to 256 (data type max value), the passenger becomes "bored"
+    There is a small window of time where this timer stays at 256 (important!!!)
+For outside connections, when a passenger becomes bored, a vehicle is spawned
+    With this mod, the game tries to arrange earlier passengers to board the vehicle first
+```
+
+With this, the leftover passengers that could not board the previous vehicle are much more likely to wait longer to merge with the later passengers, resulting in fewer but packed vehicles spawning.

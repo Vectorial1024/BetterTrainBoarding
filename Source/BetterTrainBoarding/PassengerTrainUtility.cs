@@ -27,6 +27,9 @@ namespace BetterTrainBoarding
             {
                 return;
             }
+            // remember to reset the wait time alarm! otherwise outside vehicles would keep endlessly spawning
+            var netManager = Singleton<NetManager>.instance;
+            netManager.m_nodes.m_buffer[currentStop].m_maxWaitTime = 0;
 
             var trainStatus = new TrainOccupancyInfo(vehicleID);
             var paxStatus = new PassengerWaitingInfo(currentStop, nextStop);

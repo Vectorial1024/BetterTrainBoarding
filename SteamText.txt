@@ -5,22 +5,19 @@ Unlock the peak efficiency of trains/metros by fixing boarding behavior.
 [h1]Quick info[/h1]
 [list]
 [*]Requires Harmony
-[*]Load after IPT2; more details in FAQ
-[*]Passengers board trains and metros by preferring the closest available trailer
-[*](Clarify) Passengers board trains and metros by first-come-first-serve
-[*]Greatly improves efficiency of trains/metros
-[*](New) Now also supports trams (light rails)
-[*]Should also work with monorails
-[*](New) Now also benefits buses, ferries, etc
-[*]火車乘客/地鐵乘客上車時會優先選擇最接近自己嘅車卡
-[*](闡明) 火車乘客/地鐵乘客以「先到先得」原則上車
-[*]大幅改善火車/地鐵效率
-[*](新) 電車 (輕鐵) 亦有得益
-[*]應該對單軌列車同時有效
-[*](新) 巴士、渡輪等等亦有得益
+[*]Passengers board trains, metros, etc. by preferring the closest available trailer
+[*]Passengers board trains, metros, etc. by first-come-first-served
+[*]Now also supports trams, buses, ferries, ... except planes
+[*]Greatly improves efficiency of trains/metros/etc.
+[*]Indirectly improves efficiency of outside connections
+[*]火車/地鐵/其他交通乘客上車時會優先選擇最接近自己嘅車卡
+[*]火車/地鐵/其他交通乘客以「先到先得」原則上車
+[*]同時處理電車、巴士、渡輪... 但飛機除外
+[*]大幅改善火車/地鐵/其他交通效率
+[*]間接改善城市對外交通運作效率
 [/list]
 
-In my game, the metro lines were always a problem. While they e.g. certainly can carry more passengers than buses, for some reason they just feel less effective that they seem.
+In my game, the metro lines were always a problem. While they e.g. certainly can carry more passengers than buses, for some reason they just feel less effective than expected.
 
 A similar situation also plagues the bus lines. I certainly made sure there are enough vehicles to move the passengers, but for some reason, CIMs just give up too soon when waiting for buses.
 
@@ -29,21 +26,21 @@ It turns out this is caused by the game's simple algorithm for loading passenger
 [*]Passengers are to be sent into the metro sequentially from the front to the end of the platform, until the metro is full
 [*]They can spend too much time walking to the correct trailer, e.g., when front-most passengers are assigned the back-most metro trailer
 [/list]
-This causes metros to be delayed, which creates a vicuious cycle: there will be more passengers waiting at the next station.
+This causes metros to be delayed, which creates a vicious cycle: there will be more passengers waiting at the next station.
 
 The same algorithm also causes problems where the bus (and other types of transport) cannot accept passengers in a logical manner:
 [list]
 [*]The loading algorithm does not take into account who arrived first
-[*]Very often in intermediate stops, some passengers are consistently left behind due to insufficient capacity in each individual passing bus 
+[*]Very often in intermediate stops, some passengers are consistently left behind due to insufficient capacity in each individual passing bus
 [/list]
 This generates a consistent group of "leftover" passengers, who either give up or spawn their pocket vehicles, creating sudden unexplained congestions just like that.
 
 And so, this mod makes changes such that:
 [list]
 [*]Passengers will board the metro by each of their own closest trailer, until the metro is full
-[*]Most of the time, this means the passengers will board the trailer in front of them, saving boarding time
+[*]This usually means, passengers will board the trailer in front of them, reducing boarding time
 [*]I have also made it such that passengers board metros, buses, etc in a first-come-first-served basis
-[*]Most of the time, this means the wait-timer of passengers will stay consistently low where possible, and car traffic should decrease
+[*]This usually means, the wait-timer of passengers will stay consistently low where possible, and car traffic should decrease
 [/list]
 
 [h1]What you can do with this mod[/h1]
@@ -54,8 +51,8 @@ With this mod enabled, you can do the following:
 [*]Have frequent-service bus lines (long or short) that actually work
 [*]Generally increases the efficiency of inner-city transportation
 [/list]
-Interestingly, one good side effect of this mod is that external connection passenger transport (e.g. planes, ships, etc) now almost always spawn with full passenger load,
-so this mod has applications beyond simply improving passenger train boarding.
+Interestingly, one good side effect of this mod is that external connection passenger transport (e.g. planes, ships, etc) now almost always spawn fewer but fuller vehicles,
+so this mod has applications beyond simply improving inner-city boarding.
 
 [h1]GitHub Repo[/h1]
 This mod is open-sourced, and the repo is available here: https://github.com/Vectorial1024/BetterTrainBoarding
@@ -99,4 +96,4 @@ And that's all!
 [*]改善市內交通效率
 [/list]
 
-有趣地，使用本mod可同時享用一個良好副作用：地圖聯外交通車輛(例如飛機、郵輪等)會先盡量上滿乘客，然後再出現。
+有趣地，使用本mod可同時享用一個良好副作用：地圖聯外交通車輛(例如飛機、郵輪等)會產生較少但較滿嘅車輛，改善效率。
